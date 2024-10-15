@@ -37,7 +37,7 @@ const recentOrderData = [
     }
 ];
 
-const account = () =>{
+const Account = () =>{
     const tableRef = useRef(); // Create a reference for the table
 
     const generatePDF = () => {
@@ -112,4 +112,4 @@ const account = () =>{
     )
 };
 
-export default account;
+export default Account;

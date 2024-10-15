@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-const profile = () =>{
+const Profile = () =>{
     const [image, setImage] = useState(null);
 
     const handleImageUpload = (event) => {
@@ -126,4 +126,4 @@ const profile = () =>{
     )
 };
 
-export default profile;
+export default Profile;

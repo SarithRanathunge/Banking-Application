@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import Profile from './profile';
 import Account from './account';
-import { se } from 'date-fns/locale';
+// import { se } from 'date-fns/locale';
 
 const Info = () => {
     const [show, setShow] = useState('Profile');
