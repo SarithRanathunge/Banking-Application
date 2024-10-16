@@ -9,6 +9,7 @@ export const getCustomerByNic = (NIC) => api.get(`/customers/${NIC}`);
 export const getAccountTypes = () => api.get(`/accountTypes/`);
 export const getAccountNo = () => api.get('/accounts/next-account/');
 export const createAccount = (accountData) => api.post('/accounts/create', accountData);
+export const getAccountForWithdrawalAndDeposit = (account_no) => api.get(`/accounts/withdraw-deposit/${account_no}`);
 
 //Auth API endpoints
 export const loginUser = (userData) => api.post('/auth/login', userData);

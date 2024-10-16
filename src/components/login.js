@@ -26,12 +26,12 @@ const Login = () => {
     
             // Decode the JWT token
             const decoded = jwtDecode(response.data.token);
-
+            console.log(decoded.user.position);
             // Redirect based on role
-            if (["Manager", "Assistant Manager"].includes(decoded.position)) {
-                navigate('/manager');
-            } else if (["Clerk", "Teller"].includes(decoded.position)) {
-                navigate('/employee');
+            if (["Manager", "Assistant Manager"].includes(decoded.user.position)) {
+                navigate('/manager', { state: { branch_name: decoded.user.branch_name, first_name: decoded.user.first_name } });
+            } else if (["Clerk", "Teller"].includes(decoded.user.position)) {
+                navigate('/main', { state: { branch_name: decoded.user.branch_name, first_name: decoded.user.first_name } });
             }
             
             console.log(decoded);

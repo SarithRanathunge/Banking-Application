@@ -1,5 +1,6 @@
 import React, {useState, useEffect } from 'react';
 import { getCustomerByNic, getAccountTypes, getAccountNo, createAccount } from '../../api';
+import {jwtDecode} from 'jwt-decode';
 
 const Open = () => {
     const [image, setImage] = useState(null);
@@ -10,10 +11,44 @@ const Open = () => {
     const [DOB, setDOB] = useState('');
     const [tel_no, setTel_no] = useState('');
     const [Gender, setGender] = useState('');
+    const [branchId, setBranchId] = useState('');
+    const [employeeId, setEmployeeId] = useState('');
     const [accountTypes, setAccountTypes] = useState([]);
     const [selectedAccountType, setSelectedAccountType] = useState('');
+    const [selectedAccountTypeId, setSelectedAccountTypeId] = useState('');
     const [interest_rate, setInterest_rate] = useState('');
     const [isReadOnly, setIsReadOnly] = useState(true);
+
+    const resetForm = () => {
+      setNIC('');
+      setAccount_no(''); // If you're fetching this dynamically, you can leave this as is
+      setSelectedAccountType('');
+      setSelectedAccountTypeId('');
+      setInterest_rate('');
+      setName('');
+      setAddress('');
+      setDOB('');
+      setTel_no('');
+      setGender('');
+      setImage(''); // Reset the signature or image field if needed
+    };
+    const getAccountNumber = async () => {
+      try{
+        const response = await getAccountNo();
+        setAccount_no(response.data.next_account_no);
+      }catch(error){
+        console.error('Error fetching account number', error);
+      }
+    };
+
+    const getCurrentDate = () => {
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+      const day = String(today.getDate()).padStart(2, '0');
+      
+      return `${year}-${month}-${day}`;
+    };
 
     const searchCustomer = async () => {
       // Basic validation for required fields
@@ -69,35 +104,65 @@ const Open = () => {
       const selectedType = event.target.value;
       setSelectedAccountType(selectedType);
 
-      // Find the selected account type's interest rate
+      // Find the selected account type's details
       const selectedTypeDetails = accountTypes.find(
-          (type) => type.account_type_name === selectedType
+        (type) => type.account_type_name === selectedType
       );
 
-      // Update the interest rate based on the selected account type
+      // Update the interest rate and account_type_id based on the selected account type
       setInterest_rate(selectedTypeDetails ? selectedTypeDetails.interest_rate : '');
+      setSelectedAccountTypeId(selectedTypeDetails ? selectedTypeDetails.account_type_id : '');
     };
 
-    //handle create account
-    const createAccount = async (e) => {
+    // handle create account
+    const createNewAccount = async (e) => {
       e.preventDefault();
-      try{
+      console.log(accountTypes);
+      console.log(selectedAccountType);
+      try {
+        // Create the object with the necessary data from your state
         const accountData = {
-          NIC,
-          Account_no,
-          Name,
-          Address,
-          DOB,
-          tel_no,
-        }
-      }catch(error){
+          NIC,           // Get NIC from state
+          account_no: Account_no, // Get account number from state
+          account_type_id: selectedAccountTypeId, // If you're using a dropdown for account type
+          interest_rate, // Get interest rate from state
+          customer_name: Name,   // Get name from state
+          address: Address,      // Get address from state
+          DOB,                   // Get DOB from state
+          tel_no,                // Get telephone number from state
+          gender: Gender,        // Get gender from state (if using radio buttons or a select)
+          signature: image,             // Include the signature if you're collecting it
+          date_opened: getCurrentDate(), // Include the current date as date_opened
+          branch_id: branchId, // Branch ID from state if applicable
+          employee_id: employeeId // Assuming you have this data from the login session
+        };
 
+        // Make the API request to create a new account
+        const response = await createAccount(accountData);
+
+        if (response.status === 200) {
+          alert('Bank account created successfully');
+          // Handle success, e.g., clear form fields or redirect the user
+          resetForm();
+          await getAccountNumber();
+        } else {
+          alert('Failed to create bank account');
+        }
+      } catch (error) {
+        console.error('Error creating account:', error);
+        alert('An error occurred while creating the account. Please try again.');
       }
-    }
+    };
 
     //USE-EFFECT
     // Fetch account types when the component mounts
     useEffect(() => {
+      const token = localStorage.getItem('token'); // Assuming you store your token in localStorage
+      if (token) {
+        const decodedToken = jwtDecode(token);
+        setBranchId(decodedToken.user.branch_id);
+        setEmployeeId(decodedToken.user.employee_id);
+      }
       const fetchAccountTypes = async () => {
           try {
               const response = await getAccountTypes();
@@ -105,15 +170,6 @@ const Open = () => {
           } catch (error) {
               console.error('Error fetching account types', error);
           }
-      };
-      const getAccountNumber = async () => {
-        try{
-          const response = await getAccountNo();
-          console.log(response.data.next_account_no);
-          setAccount_no(response.data.next_account_no);
-        }catch(error){
-          console.error('Error fetching account number', error);
-        }
       };
       fetchAccountTypes();
       getAccountNumber();
@@ -246,10 +302,10 @@ const Open = () => {
                         </div>
                       
                         <div className='w-auto h-auto flex flex-col my-2'>
-                            <label className='text-[15pt] font-medium'>Date of Birth (DD/MM/YYYY)</label>
+                            <label className='text-[15pt] font-medium'>Date of Birth (YYYY/MM/DD)</label>
                             <input className='w-[480px] h-[50px] text-[14pt] mt-1 outline-none rounded border-[3.2px] pl-2 border-orange-500 bg-none outline-transparent'
                                   type="text"
-                                  placeholder='* 12/03/2024'
+                                  placeholder='* 2024/10/16'
                                   value={DOB}
                                   readOnly={isReadOnly}
                                   onChange={(e) => setDOB(e.target.value)} // Add this line to handle changes
@@ -300,7 +356,7 @@ const Open = () => {
                 </div>
 
                 <div className='w-full h-[50px] flex flex-row justify-between items-center px-[110px]'>
-                    <button onClick={createAccount} className='w-[200px] h-[50px] justify-center items-center text-[14pt] mt-1 bg-orange-500 text-white rounded border-[2px] border-orange-500 border-solid hover:border-[2px] hover:border-orange-500 hover:bg-white hover:text-orange-500'>Create Account</button>
+                    <button onClick={createNewAccount} className='w-[200px] h-[50px] justify-center items-center text-[14pt] mt-1 bg-orange-500 text-white rounded border-[2px] border-orange-500 border-solid hover:border-[2px] hover:border-orange-500 hover:bg-white hover:text-orange-500'>Create Account</button>
                 </div>
             </div>
         </div>
