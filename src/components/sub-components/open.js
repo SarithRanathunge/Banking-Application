@@ -1,6 +1,7 @@
 import React, {useState, useEffect } from 'react';
-import { getCustomerByNic, getAccountTypes, getAccountNo, createAccount } from '../../api';
+import { getCustomerByNic, getAccountTypes, getAccountNo,  } from '../../api';
 import {jwtDecode} from 'jwt-decode';
+import axios from 'axios';
 
 const Open = () => {
     const [image, setImage] = useState(null);
@@ -18,6 +19,7 @@ const Open = () => {
     const [selectedAccountTypeId, setSelectedAccountTypeId] = useState('');
     const [interest_rate, setInterest_rate] = useState('');
     const [isReadOnly, setIsReadOnly] = useState(true);
+    const [imagePreview, setImagePreview] = useState('');
 
     const resetForm = () => {
       setNIC('');
@@ -92,11 +94,11 @@ const Open = () => {
         }
       }
     }
-    const handleImageUpload = (event) => {
-      const file = event.target.files[0];
-      if (file) {
-        setImage(URL.createObjectURL(file));
-      }
+    const handleImageUpload = (e) => {
+      const file = e.target.files[0];
+      setImage(file);
+      const imageURL = URL.createObjectURL(file);
+      setImagePreview(imageURL);
     };
 
     // Handle account type selection change
@@ -114,40 +116,61 @@ const Open = () => {
       setSelectedAccountTypeId(selectedTypeDetails ? selectedTypeDetails.account_type_id : '');
     };
 
-    // handle create account
-    const createNewAccount = async (e) => {
+    //handle create account
+    const createNewAccount = (e) => {
       e.preventDefault();
       console.log(accountTypes);
       console.log(selectedAccountType);
       try {
-        // Create the object with the necessary data from your state
-        const accountData = {
-          NIC,           // Get NIC from state
-          account_no: Account_no, // Get account number from state
-          account_type_id: selectedAccountTypeId, // If you're using a dropdown for account type
-          interest_rate, // Get interest rate from state
-          customer_name: Name,   // Get name from state
-          address: Address,      // Get address from state
-          DOB,                   // Get DOB from state
-          tel_no,                // Get telephone number from state
-          gender: Gender,        // Get gender from state (if using radio buttons or a select)
-          signature: image,             // Include the signature if you're collecting it
-          date_opened: getCurrentDate(), // Include the current date as date_opened
-          branch_id: branchId, // Branch ID from state if applicable
-          employee_id: employeeId // Assuming you have this data from the login session
-        };
+        // // Create the object with the necessary data from your state
+        // const accountData = {
+        //   NIC,           // Get NIC from state
+        //   account_no: Account_no, // Get account number from state
+        //   account_type_id: selectedAccountTypeId, // If you're using a dropdown for account type
+        //   interest_rate, // Get interest rate from state
+        //   customer_name: Name,   // Get name from state
+        //   address: Address,      // Get address from state
+        //   DOB,                   // Get DOB from state
+        //   tel_no,                // Get telephone number from state
+        //   gender: Gender,        // Get gender from state (if using radio buttons or a select)
+        //   signature: image,             // Include the signature if you're collecting it
+        //   date_opened: getCurrentDate(), // Include the current date as date_opened
+        //   branch_id: branchId, // Branch ID from state if applicable
+        //   employee_id: employeeId // Assuming you have this data from the login session
+        // };
 
-        // Make the API request to create a new account
-        const response = await createAccount(accountData);
+        // Create a FormData object
+        const formData = new FormData();
+        formData.append('NIC', NIC);
+        formData.append('account_no', Account_no);
+        formData.append('account_type_id', selectedAccountTypeId);
+        formData.append('interest_rate', interest_rate);
+        formData.append('customer_name', Name);
+        formData.append('address', Address);
+        formData.append('DOB', DOB);
+        formData.append('tel_no', tel_no);
+        formData.append('gender', Gender);
+        formData.append('signature', image); // Make sure 'image' is the file object
+        formData.append('date_opened', getCurrentDate());
+        formData.append('branch_id', branchId);
+        formData.append('employee_id', employeeId);
 
-        if (response.status === 200) {
-          alert('Bank account created successfully');
-          // Handle success, e.g., clear form fields or redirect the user
-          resetForm();
-          await getAccountNumber();
-        } else {
-          alert('Failed to create bank account');
-        }
+        // // Make the API request to create a new account
+        // const response = await createAccount(formData);
+
+        // if (response.status === 200) {
+        //   alert('Bank account created successfully');
+        //   // Handle success, e.g., clear form fields or redirect the user
+        //   resetForm();
+        //   await getAccountNumber();
+        // } else {
+        //   alert('Failed to create bank account');
+        // }
+        // Make sure `signatureFile` is a valid `File` object
+        axios.post('http://localhost:5000/accounts/create', formData)
+        .then((response) => {console.log(response)})
+        .catch((error) => {console.error(error)});
+        resetForm();
       } catch (error) {
         console.error('Error creating account:', error);
         alert('An error occurred while creating the account. Please try again.');
@@ -174,6 +197,11 @@ const Open = () => {
       fetchAccountTypes();
       getAccountNumber();
     }, []);
+    useEffect(() => {
+      if (image) {
+        console.log('Current image data:', image);
+      }
+    }, [image]);
 
     return (
         <div className="w-full h-[725px] flex flex-col font-sans antialiased">
@@ -253,12 +281,13 @@ const Open = () => {
                                   accept="image/*"
                                   id="input-file"
                                   className="hidden"
+                                  name='Signature'
                                   onChange={handleImageUpload}
                                 />
                                 <div className="w-[480px] h-[230px] flex justify-center items-center text-center">
-                                  {image ? (
+                                  {imagePreview ? (
                                     <img
-                                      src={image}
+                                      src={imagePreview}
                                       alt="Uploaded"
                                       className="w-[480px] h-[210px] object-contain rounded"
                                     />
