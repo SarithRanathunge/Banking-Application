@@ -1,6 +1,6 @@
 import React, {useState, useEffect } from 'react';
-import { getAccountForWithdrawalAndDeposit } from '../../api';
-// import { set } from 'date-fns';
+import { getAccountForWithdrawalAndDeposit, withdrawAmount } from '../../api'
+import {jwtDecode} from 'jwt-decode';
 
 const Withdraw = () => {
     const [image, setImage] = useState(null);
@@ -10,6 +10,12 @@ const Withdraw = () => {
     const [employeeId, setEmployeeId] = useState('');
     const [selectedAccountType, setSelectedAccountType] = useState('');
     const [balance, setBalance] = useState('');
+    const [amount, setAmount] = useState('');
+    const [branchId, setBranchId] = useState('');
+
+    // Convert input value to a number and check if it's less than or equal to 0
+    const isButtonDisabled = Number(balance) <= 0;
+
 
 
     const searchUserDetails = async () => {
@@ -53,11 +59,34 @@ const Withdraw = () => {
           }
         }
       }
-      useEffect(() => {
-        if (image) {
-          console.log('Current image data:', image);
-        }
-      }, [image]);
+    //USE-EFFECT
+    // Fetch account types when the component mounts
+    useEffect(() => {
+      const token = localStorage.getItem('token'); // Assuming you store your token in localStorage
+      console.log(token);
+      if (token) {
+        const decodedToken = jwtDecode(token);
+        console.log(decodedToken);
+        setBranchId(decodedToken.user.branch_id);
+        setEmployeeId(decodedToken.user.employee_id);
+      }
+    }, []);
+
+    const withdraw = async () => {
+      const withdrawData = {
+        account_no: Account_no,
+        amount: amount,
+        employee_id: employeeId,
+        branch_id: branchId,
+      };
+      try {
+        const response = await withdrawAmount(withdrawData);
+        console.log(response);
+      } catch (error) {
+        console.log("An unexpected error occurred:", error.response ? error.response.data : error.message);
+
+      }
+    }
     return (
       <div className="w-full h-[725px] flex flex-col font-sans antialiased">
         <div className="w-full h-auto flex justify-center items-center">
@@ -75,11 +104,11 @@ const Withdraw = () => {
                 width="24"
                 height="24"
                 viewBox="0 0 24 24"
-                stroke-width="2"
+                strokeWidth="2"
                 stroke="currentColor"
                 fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path stroke="none" d="M0 0h24v24H0z" />
                 <circle cx="10" cy="10" r="7" />
@@ -173,9 +202,11 @@ const Withdraw = () => {
                 className="w-[500px] h-[50px] text-[14pt] mt-1 outline-none rounded border-[3.2px] pl-2 border-orange-500 bg-none outline-transparent"
                 type="text"
                 placeholder="Amount (Rs.)"
+                disabled={isButtonDisabled}
+                onChange={(e) => setAmount(e.target.value)}
               />
             </div>
-            <button className="w-[200px] h-[50px] justify-center items-center text-[14pt] mt-8 bg-orange-500 text-white rounded border-[2px] border-orange-500 border-solid hover:border-[2px] hover:border-orange-500 hover:bg-white hover:text-orange-500">
+            <button onClick={withdraw} disabled ={isButtonDisabled} className="w-[200px] h-[50px] justify-center items-center text-[14pt] mt-8 bg-orange-500 text-white rounded border-[2px] border-orange-500 border-solid hover:border-[2px] hover:border-orange-500 hover:bg-white hover:text-orange-500">
               Withdraw
             </button>
           </div>

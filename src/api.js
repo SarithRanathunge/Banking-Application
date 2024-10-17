@@ -12,6 +12,8 @@ export const createAccount = (formData) => api.post('/accounts/create', formData
     'Content-Type': 'multipart/form-data',
   },});
 export const getAccountForWithdrawalAndDeposit = (account_no) => api.get(`/accounts/withdraw-deposit/${account_no}`);
+export const withdrawAmount = (withdrawData) => api.post("/transactions/withdraw", withdrawData);
+export const depositAmount = (depositData) => api.post("/transactions/deposit", depositData);
 
 //Auth API endpoints
 export const loginUser = (userData) => api.post('/auth/login', userData);
