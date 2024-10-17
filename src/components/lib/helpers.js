@@ -20,7 +20,7 @@ export function getOrderStatus(status) {
 			)
 		default:
 			return (
-				<span className="w-[70px] h-[30px] flex justify-center items-center capitalize rounded text-[12pt] text-white bg-gray-500">
+				<span className="w-[90px] h-[30px] flex justify-center items-center capitalize rounded text-[12pt] text-white bg-green-500">
 					{status.replaceAll('_', ' ').toLowerCase()}
 				</span>
 			)

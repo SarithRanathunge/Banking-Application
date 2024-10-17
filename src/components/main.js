@@ -152,7 +152,7 @@ const Main = () => {
 
                     {/* Log Out Button */}
                     <button 
-                        className='w-full py-4 pl-9 text-[15pt] flex flex-row items-center mt-[150px] font-bold hover:bg-white hover:text-red-600'
+                        className='w-full py-4 pl-9 text-[15pt] flex flex-row items-center mt-[100px] font-bold hover:bg-white hover:text-red-600'
                         onClick={togglePopup}>
                         <svg className='w-[28px] h-auto mx-2 hover:text-red-600' width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z"/>  

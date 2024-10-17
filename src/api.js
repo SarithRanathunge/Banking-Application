@@ -6,6 +6,7 @@ const api = axios.create({
 
 // Tasks API endpoints
 export const getCustomerByNic = (NIC) => api.get(`/customers/${NIC}`);
+export const getCustomerAndAccountByNic = (NIC) => api.get(`/customers/${NIC}`);
 export const getAccountTypes = () => api.get(`/accountTypes/`);
 export const getAccountNo = () => api.get('/accounts/next-account/');
 export const createAccount = (formData) => api.post('/accounts/create', formData, {headers: {
@@ -14,6 +15,7 @@ export const createAccount = (formData) => api.post('/accounts/create', formData
 export const getAccountForWithdrawalAndDeposit = (account_no) => api.get(`/accounts/withdraw-deposit/${account_no}`);
 export const withdrawAmount = (withdrawData) => api.post("/transactions/withdraw", withdrawData);
 export const depositAmount = (depositData) => api.post("/transactions/deposit", depositData);
+export const getTransactions = (branchID) => api.get(`/transactions/transaction/${branchID}`);
 
 //Auth API endpoints
 export const loginUser = (userData) => api.post('/auth/login', userData);

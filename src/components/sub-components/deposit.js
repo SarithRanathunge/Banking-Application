@@ -85,7 +85,7 @@ const Deposit = () => {
       }
 
     return (
-        <div className="w-full h-[725px] flex flex-col font-sans antialiased">
+        <div className="w-full h-[700px] flex flex-col font-sans antialiased">
 
             <div className='w-full h-auto flex justify-center items-center'>
                 <div className='w-[500px] h-[50px] flex flex-row px-5 my-3 bg-transparent border-[3.2px] pl-4 rounded-full border-orange-500 bg-none outline-transparent'>

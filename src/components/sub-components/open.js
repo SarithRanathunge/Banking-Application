@@ -204,7 +204,7 @@ const Open = () => {
     }, [image]);
 
     return (
-        <div className="w-full h-[725px] flex flex-col font-sans antialiased">
+        <div className="w-full h-[700px] flex flex-col font-sans antialiased">
 
             {/* search bar */}
             <div className='w-full h-auto flex justify-center items-center'>
