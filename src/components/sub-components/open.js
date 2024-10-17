@@ -31,29 +31,42 @@ const Open = () => {
             <div className="w-full h-[650px] flex flex-col font-sans antialiased overflow-y-auto"> 
                 <div className='w-full h-auto flex flex-row justify-between items-start px-[110px]'>
                     <div className='w-auto h-auto flex flex-col'>
+                         {/* Account No. */}
                         <div className='w-auto h-auto flex flex-col my-2 '>
+                          <div className='w-[480px] h-auto flex flex-row justify-between items-center'>
                             <label className='text-[15pt] font-medium'>Account No.</label>
-                            <input className='w-[480px] h-[50px] text-[14pt] mt-1 outline-none rounded border-[3.2px] pl-2 border-orange-500 bg-none outline-transparent'
-                                  type="text"
-                                  placeholder='Account No.'
-                            />
+                            <p className='text-[10pt] text-red-500'>Error Showing Section</p>
+                          </div>
+                          <input className='w-[480px] h-[50px] text-[14pt] mt-1 outline-none rounded border-[3.2px] pl-2 border-orange-500 bg-none outline-transparent'
+                                type="text"
+                                placeholder='Account No.'
+                          />
                         </div>
                         <div className='w-auto h-auto flex flex-col my-2 '>
-                            <label className='text-[15pt] font-medium'>Account Type</label>
+                            <div className='w-[480px] h-auto flex flex-row justify-between items-center'>
+                              <label className='text-[15pt] font-medium'>Account Type</label>
+                              <p className='text-[10pt] text-red-500'>Error Showing Section</p>
+                            </div>
                             <input className='w-[480px] h-[50px] text-[14pt] mt-1 outline-none rounded border-[3.2px] pl-2 border-orange-500 bg-none outline-transparent'
                                   type="text"
                                   placeholder='Account Type'
                             />
                         </div>
                         <div className='w-auto h-auto flex flex-col my-2'>
-                            <label className='text-[15pt] font-medium'>Intrest Rate</label>
+                            <div className='w-[480px] h-auto flex flex-row justify-between items-center'>
+                              <label className='text-[15pt] font-medium'>Intrest Rate</label>
+                              <p className='text-[10pt] text-red-500'>Error Showing Section</p>
+                            </div>
                             <input className='w-[480px] h-[50px] text-[14pt] mt-1 outline-none rounded border-[3.2px] pl-2 border-orange-500 bg-none outline-transparent'
                                   type="text"
                                   placeholder='*0.01'
                             />
                         </div>
                         <div className='w-auto h-auto flex flex-col my-2'>
-                            <label className='text-[15pt] font-medium'>Signature</label>
+                            <div className='w-[480px] h-auto flex flex-row justify-between items-center'>
+                              <label className='text-[15pt] font-medium'>Signature</label>
+                              <p className='text-[10pt] text-red-500'>Error Showing Section</p>
+                            </div>
                             <div className="w-[480px] h-[230px] flex justify-center items-center mt-1">
                               <label
                                 htmlFor="input-file"
@@ -91,35 +104,51 @@ const Open = () => {
                     </div>
                     <div className='w-auto h-auto flex flex-col'>
                         <div className='w-auto h-auto flex flex-col my-2 '>
-                            <label className='text-[15pt] font-medium'>Full Name</label>
+                            <div className='w-[480px] h-auto flex flex-row justify-between items-center'>
+                              <label className='text-[15pt] font-medium'>Full Name</label>
+                              <p className='text-[10pt] text-red-500'>Error Showing Section</p>
+                            </div>
+                            <label className='text-[15pt] font-medium'></label>
                             <input className='w-[480px] h-[50px] text-[14pt] mt-1 outline-none rounded border-[3.2px] pl-2 border-orange-500 bg-none outline-transparent'
                                   type="text"
                                   placeholder='*K.M.L Kamal Perera'
                             />
                         </div>
                         <div className='w-auto h-auto flex flex-col my-2'>
-                            <label className='text-[15pt] font-medium'>Address</label>
+                            <div className='w-[480px] h-auto flex flex-row justify-between items-center'>
+                              <label className='text-[15pt] font-medium'>Address</label>
+                              <p className='text-[10pt] text-red-500'>Error Showing Section</p>
+                            </div>
                             <input className='w-[480px] h-[50px] text-[14pt] mt-1 outline-none rounded border-[3.2px] pl-2 border-orange-500 bg-none outline-transparent'
                                   type="text"
                                   placeholder='*No.108/13 Kurudu Road, Kadawatha, Colombo 7'
                             />
                         </div>
                         <div className='w-auto h-auto flex flex-col my-2'>
-                            <label className='text-[15pt] font-medium'>Email</label>
+                            <div className='w-[480px] h-auto flex flex-row justify-between items-center'>
+                              <label className='text-[15pt] font-medium'>Email</label>
+                              <p className='text-[10pt] text-red-500'>Error Showing Section</p>
+                            </div>
                             <input className='w-[480px] h-[50px] text-[14pt] mt-1 outline-none rounded border-[3.2px] pl-2 border-orange-500 bg-none outline-transparent'
                                   type="text"
                                   placeholder='*sample@gmail.com'
                             />
                         </div>
                         <div className='w-auto h-auto flex flex-col my-2'>
-                            <label className='text-[15pt] font-medium'>Date of Birth (DD/MM/YYYY)</label>
+                            <div className='w-[480px] h-auto flex flex-row justify-between items-center'>
+                              <label className='text-[15pt] font-medium'>Date of Birth</label>
+                              <p className='text-[10pt] text-red-500'>Error Showing Section</p>
+                            </div>
                             <input className='w-[480px] h-[50px] text-[14pt] mt-1 outline-none rounded border-[3.2px] pl-2 border-orange-500 bg-none outline-transparent'
-                                  type="text"
+                                  type="date"
                                   placeholder='* 12/03/2024'
                             />
                         </div>
                         <div className='w-auto h-auto flex flex-col my-2'>
-                            <label className='text-[15pt] font-medium'>Telephone</label>
+                            <div className='w-[480px] h-auto flex flex-row justify-between items-center'>
+                              <label className='text-[15pt] font-medium'>Telephone</label>
+                              <p className='text-[10pt] text-red-500'>Error Showing Section</p>
+                            </div>
                             <input className='w-[480px] h-[50px] text-[14pt] mt-1 outline-none rounded border-[3.2px] pl-2 border-orange-500 bg-none outline-transparent'
                                   type="text"
                                   placeholder='*0761234567'
@@ -127,7 +156,10 @@ const Open = () => {
                         </div>
     
                         <div className='w-auto h-auto flex flex-col my-2'>
-                            <label className='text-[15pt] font-medium'>Gender</label>
+                            <div className='w-[480px] h-auto flex flex-row justify-between items-center'>
+                              <label className='text-[15pt] font-medium'>Gender</label>
+                              <p className='text-[10pt] text-red-500'>Error Showing Section</p>
+                            </div>
                             <div className='w-[480px] h-[50px] flex flex-row justify-start items-center text-[14pt] gap-20'>
                               <div>
                                 <label>

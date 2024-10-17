@@ -24,21 +24,30 @@ const Deposit = () => {
                 <div className='w-full h-auto flex flex-row justify-between items-end px-[110px] mt-3.5'>
                     <div className='w-auto h-auto flex flex-col'>
                         <div className='w-auto h-auto flex flex-col my-2 '>
-                            <label className='text-[15pt] font-medium'>Account No.</label>
+                            <div className='w-[480px] h-auto flex flex-row justify-between items-center'>
+                              <label className='text-[15pt] font-medium'>Account No.</label>
+                              <p className='text-[10pt] text-red-500'>Error Showing Section</p>
+                            </div>
                             <input className='w-[480px] h-[50px] text-[14pt] mt-1 outline-none rounded border-[3.2px] pl-2 border-orange-500 bg-none outline-transparent'
                                   type="text"
                                   placeholder='Account No.'
                             />
                         </div>
                         <div className='w-auto h-auto flex flex-col my-2'>
-                            <label className='text-[15pt] font-medium'>Name</label>
+                            <div className='w-[480px] h-auto flex flex-row justify-between items-center'>
+                              <label className='text-[15pt] font-medium'>Name</label>
+                              <p className='text-[10pt] text-red-500'>Error Showing Section</p>
+                            </div>
                             <input className='w-[480px] h-[50px] text-[14pt] mt-1 outline-none rounded border-[3.2px] pl-2 border-orange-500 bg-none outline-transparent'
                                   type="text"
                                   placeholder='Name'
                             />
                         </div>
                         <div className='w-auto h-auto flex flex-col my-2'>
-                            <label className='text-[15pt] font-medium'>Balance</label>
+                            <div className='w-[480px] h-auto flex flex-row justify-between items-center'>
+                              <label className='text-[15pt] font-medium'>Balance</label>
+                              <p className='text-[10pt] text-red-500'>Error Showing Section</p>
+                            </div>
                             <input className='w-[480px] h-[50px] text-[14pt] mt-1 outline-none rounded border-[3.2px] pl-2 border-orange-500 bg-none outline-transparent'
                                   type="text"
                                   placeholder='Balance'
@@ -47,14 +56,20 @@ const Deposit = () => {
                     </div>
                     <div className='w-auto h-auto flex flex-col'>
                         <div className='w-auto h-auto flex flex-col my-2'>
-                            <label className='text-[15pt] font-medium'>NIC</label>
+                            <div className='w-[480px] h-auto flex flex-row justify-between items-center'>
+                              <label className='text-[15pt] font-medium'>NIC</label>
+                              <p className='text-[10pt] text-red-500'>Error Showing Section</p>
+                            </div>
                             <input className='w-[480px] h-[50px] text-[14pt] mt-1 outline-none rounded border-[3.2px] pl-2 border-orange-500 bg-none outline-transparent'
                                   type="text"
                                   placeholder='NIC'
                             />
                         </div>
                         <div className='w-auto h-auto flex flex-col my-2'>
-                            <label className='text-[15pt] font-medium'>Account Type</label>
+                            <div className='w-[480px] h-auto flex flex-row justify-between items-center'>
+                              <label className='text-[15pt] font-medium'>Account Type</label>
+                              <p className='text-[10pt] text-red-500'>Error Showing Section</p>
+                            </div>
                             <input className='w-[480px] h-[50px] text-[14pt] mt-1 outline-none rounded border-[3.2px] pl-2 border-orange-500 bg-none outline-transparent'
                                   type="text"
                                   placeholder='Account Type'
@@ -65,7 +80,10 @@ const Deposit = () => {
     
                 <div className='w-full h-auto flex items-center justify-center'>
                     <div className='w-auto h-auto flex flex-col my-2'>
-                        <label className='text-[15pt] font-medium'>Signature</label>
+                        <div className='w-[1060px] h-auto flex flex-row justify-between items-center'>
+                          <label className='text-[15pt] font-medium'>Signature</label>
+                          <p className='text-[10pt] text-red-500'>Error Showing Section</p>
+                        </div>
                         <div className='w-[1060px] h-[150px] text-[14pt] mt-1 outline-none rounded border-[3.2px] pl-2 border-orange-500 bg-none outline-transparent'></div>
                     </div>
                 </div>
