@@ -10,7 +10,7 @@ const Home = () => {
                 <PieChart />
             </div>
             <div className='w-full h-1/2 flex flex-row items-center justify-center'>
-                <Chart/>
+                <Chart name="Tansactions"/>
             </div>
         </div>
     );
