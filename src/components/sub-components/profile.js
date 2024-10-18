@@ -10,7 +10,7 @@ const Profile = () =>{
       }
     };
     return (
-        <div className="w-full h-[650px] flex flex-col font-sans antialiased"> 
+        <div className="w-full h-[600px] flex flex-col font-sans antialiased"> 
             <div className='w-full h-auto flex flex-row justify-between items-end px-[110px] mt-5'>
                 <div className='w-auto h-auto flex flex-col'>
                     <div className='w-auto h-auto flex flex-col my-2 '>

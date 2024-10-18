@@ -37,7 +37,7 @@ const Transaction = () => {
     if (branchId) {
       fetchTransactions();
     }
-  }, [branchId]);
+  }, []);
 
   return (
     <div className="w-full h-[700px] flex flex-col font-sans antialiased">
@@ -67,7 +67,7 @@ const Transaction = () => {
         </button>
       </div>
 
-      <div className='w-full h-auto flex items-center justify-center mt-5'>
+      <div className='w-full h-auto flex items-center justify-center'>
         {/* Pass transactions, employeeId, and branchId as props */}
         <DataTable transactions={transactions} employeeId={employeeId} branchId={branchId} />
       </div>

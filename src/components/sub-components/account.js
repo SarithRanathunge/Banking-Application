@@ -64,7 +64,7 @@ const Account = () =>{
     };
 
     return (
-        <div className="bg-white px-4 pt-3 pb-4 rounded-sm border-none flex-1">
+        <div className="w-full h-[600px] bg-white px-4 pt-3 pb-4 rounded-sm border-none flex-1">
             <div className='w-full flex flex-row justify-between items-center mt-7'>
               <h2 className="text-xl font-semibold mb-4 text-gray-700">Transaction History</h2>
               <button 

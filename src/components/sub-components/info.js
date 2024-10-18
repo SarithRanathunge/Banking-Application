@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import Profile from './profile';
 import Account from './account';
 import { getCustomerAndAccountByNic } from '../../api';
-import { set } from 'date-fns';
 
 const Info = () => {
     const [customerID, setCustomerID] = useState('');
