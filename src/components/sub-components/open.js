@@ -1,17 +1,33 @@
-import React, {useState, useEffect } from 'react';
+import React, {useState, useEffect, useMemo } from 'react';
 import { getCustomerByNic, getAccountTypes, getAccountNo,  } from '../../api';
 import {jwtDecode} from 'jwt-decode';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Open = () => {
     const [image, setImage] = useState(null);
+    const [imageError, setImageError] = useState('');
+
     const [NIC, setNIC] = useState('');
+
     const [Account_no, setAccount_no] = useState('');
+
     const [Name, setName] = useState('');
+    const [nameError, setNameError] = useState('');
+
     const [Address, setAddress] = useState('');
+    const [addressError, setAddressError] = useState('');
+
     const [DOB, setDOB] = useState('');
+    const [dobError, setDobError] = useState('');
+
     const [tel_no, setTel_no] = useState('');
+    const [telNoError, setTelNoError] = useState('');
+
     const [Gender, setGender] = useState('');
+    const [genderError, setGenderError] = useState('');
+
     const [branchId, setBranchId] = useState('');
     const [employeeId, setEmployeeId] = useState('');
     const [accountTypes, setAccountTypes] = useState([]);
@@ -21,9 +37,13 @@ const Open = () => {
     const [isReadOnly, setIsReadOnly] = useState(true);
     const [imagePreview, setImagePreview] = useState('');
 
+
+    const nameRegx = useMemo(() => /^[A-Za-z\s]+$/, []);
+    const numberRegex = useMemo(() => /^[0-9]+$/, []);
+
     const resetForm = () => {
       setNIC('');
-      setAccount_no(''); // If you're fetching this dynamically, you can leave this as is
+      // setAccount_no(''); // If you're fetching this dynamically, you can leave this as is
       setSelectedAccountType('');
       setSelectedAccountTypeId('');
       setInterest_rate('');
@@ -34,6 +54,7 @@ const Open = () => {
       setGender('');
       setImage(''); // Reset the signature or image field if needed
     };
+    
     const getAccountNumber = async () => {
       try{
         const response = await getAccountNo();
@@ -121,59 +142,75 @@ const Open = () => {
       e.preventDefault();
       console.log(accountTypes);
       console.log(selectedAccountType);
-      try {
-        // // Create the object with the necessary data from your state
-        // const accountData = {
-        //   NIC,           // Get NIC from state
-        //   account_no: Account_no, // Get account number from state
-        //   account_type_id: selectedAccountTypeId, // If you're using a dropdown for account type
-        //   interest_rate, // Get interest rate from state
-        //   customer_name: Name,   // Get name from state
-        //   address: Address,      // Get address from state
-        //   DOB,                   // Get DOB from state
-        //   tel_no,                // Get telephone number from state
-        //   gender: Gender,        // Get gender from state (if using radio buttons or a select)
-        //   signature: image,             // Include the signature if you're collecting it
-        //   date_opened: getCurrentDate(), // Include the current date as date_opened
-        //   branch_id: branchId, // Branch ID from state if applicable
-        //   employee_id: employeeId // Assuming you have this data from the login session
-        // };
 
-        // Create a FormData object
-        const formData = new FormData();
-        formData.append('NIC', NIC);
-        formData.append('account_no', Account_no);
-        formData.append('account_type_id', selectedAccountTypeId);
-        formData.append('interest_rate', interest_rate);
-        formData.append('customer_name', Name);
-        formData.append('address', Address);
-        formData.append('DOB', DOB);
-        formData.append('tel_no', tel_no);
-        formData.append('gender', Gender);
-        formData.append('signature', image); // Make sure 'image' is the file object
-        formData.append('date_opened', getCurrentDate());
-        formData.append('branch_id', branchId);
-        formData.append('employee_id', employeeId);
-
-        // // Make the API request to create a new account
-        // const response = await createAccount(formData);
-
-        // if (response.status === 200) {
-        //   alert('Bank account created successfully');
-        //   // Handle success, e.g., clear form fields or redirect the user
-        //   resetForm();
-        //   await getAccountNumber();
-        // } else {
-        //   alert('Failed to create bank account');
-        // }
-        // Make sure `signatureFile` is a valid `File` object
-        axios.post('http://localhost:5000/accounts/create', formData)
-        .then((response) => {console.log(response)})
-        .catch((error) => {console.error(error)});
-        resetForm();
-      } catch (error) {
-        console.error('Error creating account:', error);
-        alert('An error occurred while creating the account. Please try again.');
+      if(Name===""){
+        setNameError("Can't be Empty");
+        setAddressError("");
+        setDobError("");
+        setTelNoError("");
+        setGenderError("");
+        setImageError("");
+      }else if(Address===""){
+        setNameError("");
+        setAddressError("Can't be Empty");
+        setDobError("");
+        setTelNoError("");
+        setGenderError("");
+        setImageError("");
+      }else if(DOB===""){
+        setNameError("");
+        setAddressError("");
+        setDobError("Can't be Empty");
+        setTelNoError("");
+        setGenderError("");
+        setImageError("");
+      }else if(tel_no ===""){
+        setNameError("");
+        setAddressError("");
+        setDobError("");
+        setTelNoError("Can't be Empty");
+        setGenderError("");
+        setImageError("");
+      }else if(Gender===""){
+        setNameError("");
+        setAddressError("");
+        setDobError("");
+        setTelNoError("");
+        setGenderError("Please select a gender category");
+        setImageError("");
+      }else if(image===null){
+        setNameError("");
+        setAddressError("");
+        setDobError("");
+        setTelNoError("");
+        setGenderError("");
+        setImageError("Please upload a signature image");
+      }else{
+        try {
+          // Create a FormData object
+          const formData = new FormData();
+          formData.append('NIC', NIC);
+          formData.append('account_no', Account_no);
+          formData.append('account_type_id', selectedAccountTypeId);
+          formData.append('interest_rate', interest_rate);
+          formData.append('customer_name', Name);
+          formData.append('address', Address);
+          formData.append('DOB', DOB);
+          formData.append('tel_no', tel_no);
+          formData.append('gender', Gender);
+          formData.append('signature', image); // Make sure 'image' is the file object
+          formData.append('date_opened', getCurrentDate());
+          formData.append('branch_id', branchId);
+          formData.append('employee_id', employeeId);
+  
+          axios.post('http://localhost:5000/accounts/create', formData)
+          .then((response) => {console.log(response); toast.success("Bank account created successfully!");getAccountNumber();}) // Success toast
+          .catch((error) => {console.error(error); toast.error("An error occurred while creating the account.");});
+          resetForm();
+        } catch (error) {
+          console.error('Error creating account:', error);
+          alert('An error occurred while creating the account. Please try again.');
+        }
       }
     };
 
@@ -197,11 +234,79 @@ const Open = () => {
       fetchAccountTypes();
       getAccountNumber();
     }, []);
+
     useEffect(() => {
-      if (image) {
-        console.log('Current image data:', image);
+      if (imagePreview) {
+        console.log('Image exists');
       }
-    }, [image]);
+      else{
+        setImageError('Please upload a signature image');
+      }
+    }, [imagePreview]);
+    // Use effect to validate the name on input change
+  useEffect(() => {
+    if (Name !== "" && !nameRegx.test(Name)) {
+      setNameError("Can't be any numbers or special characters");
+    } else {
+      setNameError("");
+    }
+  }, [Name, nameRegx]);
+
+
+  useEffect(() => {
+    if (Address !== "") {
+      setAddressError("");
+    }
+  }, [Address]);
+
+
+  useEffect(() => {
+    // Check if DOB is not empty
+    if (DOB !== "") {
+      const selectedDate = new Date(DOB);
+      const today = new Date();
+      
+      // Check if selected DOB is in the future
+      if (selectedDate > today) {
+        setDobError("Date of birth cannot be in the future.");
+        return; // Exit early if DOB is invalid
+      }
+
+      // Calculate age
+      let age = today.getFullYear() - selectedDate.getFullYear();
+      const monthDiff = today.getMonth() - selectedDate.getMonth();
+
+      // Adjust age if the birthday has not occurred yet this year
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < selectedDate.getDate())) {
+        age--;
+      }
+
+      // Check if the age is between 18 and 65
+      if (age < 18 || age > 65) {
+        setDobError("Age must be between 18 and 65 years.");
+      } else {
+        setDobError(""); // Clear error if DOB is valid
+      }
+    }
+  }, [DOB]);
+
+  useEffect(()=>{
+    if(tel_no !== "" && !numberRegex.test(tel_no)){
+      setTelNoError("Can't be any letters or special characters");
+    }else if(tel_no.length>=1 && tel_no.length<10){
+      setTelNoError("Contact should be 10 numbers");
+    }else if(tel_no.length >10){
+      setTelNoError("Contact should be 10 numbers");
+    }else if(tel_no.length===0 || tel_no.length===10){
+      setTelNoError("");
+    }
+  },[tel_no, numberRegex]);
+
+  useEffect(() => {
+    if (Gender !== "") {
+      setGenderError("");
+    }
+  }, [Gender]);
 
     return (
         <div className="w-full h-[700px] flex flex-col font-sans antialiased">
@@ -231,7 +336,7 @@ const Open = () => {
                     <div className='w-auto h-auto flex flex-col'>
                         <div className='w-auto h-auto flex flex-col my-2 '>
                             <label className='text-[15pt] font-medium'>Account No.</label>
-                            <input className='w-[480px] h-[50px] text-[14pt] mt-1 outline-none rounded border-[3.2px] pl-2 border-orange-500 bg-none outline-transparent'
+                            <input className='w-[480px] h-[40px] text-[12pt] mt-1 outline-none rounded border-[3.2px] pl-2 border-orange-500 bg-none outline-transparent'
                                   type="text"
                                   value={Account_no}
                                   readOnly
@@ -249,7 +354,7 @@ const Open = () => {
                         <div className='w-auto h-auto flex flex-col my-2'>
                           <label className='text-[15pt] font-medium'>Account Type</label>
                           <select
-                            className='w-[480px] h-[50px] text-[14pt] mt-1 outline-none rounded border-[3.2px] pl-2 border-orange-500 bg-none outline-transparent'
+                            className='w-[480px] h-[40px] text-[12pt] mt-1 outline-none rounded border-[3.2px] pl-2 border-orange-500 bg-none outline-transparent'
                             value={selectedAccountType}
                             onChange={handleAccountTypeChange}
                           >
@@ -263,7 +368,7 @@ const Open = () => {
                         </div>
                         <div className='w-auto h-auto flex flex-col my-2'>
                             <label className='text-[15pt] font-medium'>Interest Rate</label>
-                            <input className='w-[480px] h-[50px] text-[14pt] mt-1 outline-none rounded border-[3.2px] pl-2 border-orange-500 bg-none outline-transparent'
+                            <input className='w-[480px] h-[40px] text-[12pt] mt-1 outline-none rounded border-[3.2px] pl-2 border-orange-500 bg-none outline-transparent'
                                 type="text"
                                 placeholder='*0.01'
                                 value={interest_rate}
@@ -272,6 +377,7 @@ const Open = () => {
                         </div>
                         <div className='w-auto h-auto flex flex-col my-2'>
                             <label className='text-[15pt] font-medium'>Signature</label>
+                            <p className='text-[10pt] text-red-500'>{imageError}</p>
                             <div className="w-[480px] h-[230px] flex justify-center items-center mt-1">
                               <label
                                 htmlFor="input-file"
@@ -311,7 +417,8 @@ const Open = () => {
                     <div className='w-auto h-auto flex flex-col'>
                         <div className='w-auto h-auto flex flex-col my-2 '>
                             <label className='text-[15pt] font-medium'>Full Name</label>
-                            <input className='w-[480px] h-[50px] text-[14pt] mt-1 outline-none rounded border-[3.2px] pl-2 border-orange-500 bg-none outline-transparent'
+                            <p className='text-[10pt] text-red-500'>{nameError}</p>
+                            <input className='w-[480px] h-[40px] text-[12pt] mt-1 outline-none rounded border-[3.2px] pl-2 border-orange-500 bg-none outline-transparent'
                                   type="text"
                                   placeholder='*K.M.L Kamal Perera'
                                   value={Name}
@@ -321,7 +428,8 @@ const Open = () => {
                         </div>
                         <div className='w-auto h-auto flex flex-col my-2'>
                             <label className='text-[15pt] font-medium'>Address</label>
-                            <input className='w-[480px] h-[50px] text-[14pt] mt-1 outline-none rounded border-[3.2px] pl-2 border-orange-500 bg-none outline-transparent'
+                            <p className='text-[10pt] text-red-500'>{addressError}</p>
+                            <input className='w-[480px] h-[40px] text-[12pt] mt-1 outline-none rounded border-[3.2px] pl-2 border-orange-500 bg-none outline-transparent'
                                   type="text"
                                   placeholder='*No.108/13 Kurudu Road, Kadawatha, Colombo 7'
                                   value={Address}
@@ -332,9 +440,9 @@ const Open = () => {
                       
                         <div className='w-auto h-auto flex flex-col my-2'>
                             <label className='text-[15pt] font-medium'>Date of Birth (YYYY/MM/DD)</label>
-                            <input className='w-[480px] h-[50px] text-[14pt] mt-1 outline-none rounded border-[3.2px] pl-2 border-orange-500 bg-none outline-transparent'
-                                  type="text"
-                                  placeholder='* 2024/10/16'
+                            <p className='text-[10pt] text-red-500'>{dobError}</p>
+                            <input className='w-[480px] h-[40px] text-[12pt] mt-1 outline-none rounded border-[3.2px] pl-2 border-orange-500 bg-none outline-transparent'
+                                  type="date"
                                   value={DOB}
                                   readOnly={isReadOnly}
                                   onChange={(e) => setDOB(e.target.value)} // Add this line to handle changes
@@ -343,7 +451,8 @@ const Open = () => {
 
                         <div className='w-auto h-auto flex flex-col my-2'>
                             <label className='text-[15pt] font-medium'>Telephone</label>
-                            <input className='w-[480px] h-[50px] text-[14pt] mt-1 outline-none rounded border-[3.2px] pl-2 border-orange-500 bg-none outline-transparent'
+                            <p className='text-[10pt] text-red-500'>{telNoError}</p>
+                            <input className='w-[480px] h-[40px] text-[12pt] mt-1 outline-none rounded border-[3.2px] pl-2 border-orange-500 bg-none outline-transparent'
                                   type="text"
                                   placeholder='*0761234567'
                                   value={tel_no}
@@ -354,6 +463,7 @@ const Open = () => {
     
                         <div className='w-auto h-auto flex flex-col my-2'>
                             <label className='text-[15pt] font-medium'>Gender</label>
+                            <p className='text-[10pt] text-red-500'>{genderError}</p>
                             <div className='w-[480px] h-[50px] flex flex-row justify-start items-center text-[14pt] gap-20'>
                               <div>
                                 <label>
@@ -386,6 +496,7 @@ const Open = () => {
 
                 <div className='w-full h-[50px] flex flex-row justify-between items-center px-[110px]'>
                     <button onClick={createNewAccount} className='w-[200px] h-[50px] justify-center items-center text-[14pt] mt-1 bg-orange-500 text-white rounded border-[2px] border-orange-500 border-solid hover:border-[2px] hover:border-orange-500 hover:bg-white hover:text-orange-500'>Create Account</button>
+                    <ToastContainer /> {/* Add ToastContainer here */}
                 </div>
             </div>
         </div>
