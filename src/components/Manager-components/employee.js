@@ -1,17 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import Add from "./addEmployee";
 import Table from "./empoyeeTable";
+import { jwtDecode } from 'jwt-decode';
+import { getEmployees } from '../../api';
 
 const Employee = () => {
-    const [show, setShow] = useState('Profile');    
+    const [show, setShow] = useState('Profile');
+    const [employees, setEmployees] = useState([]);
+    const [branchId, setBranchId] = useState('');    
 
     function changeSection(){
         if(show === 'Profile'){
             return <Add/>;
         }else if(show === 'Account'){
-            return <Table/>;
+            return <Table employees={employees} branchId={branchId} />;
         }
     }
+
+    const fetchEmployees = useCallback(async () => {
+        try {
+          const response = await getEmployees(branchId);
+          const data = response.data.employees;
+          console.log(data);
+          setEmployees(data);
+        } catch (error) {
+          if (error.response) {
+            console.log('Error fetching employees - Server response error:', error.response);
+          } else {
+            console.log('Error fetching employees - Client error:', error.message);
+          }
+        }
+      }, [branchId]); // Memoize to only change if branchId changes
+    
+      useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+          const decodedToken = jwtDecode(token);
+          setBranchId(decodedToken.user.branch_id);
+        //   setEmployeeId(decodedToken.user.employee_id);
+        }
+      }, []);
+    
+      useEffect(() => {
+        if (branchId) {
+          fetchEmployees();
+        }
+      }, [branchId, fetchEmployees]); // Now fetchTransactions is included in the dependency array
+
+
   return (
     <div className="w-full h-[700px] flex flex-col font-sans text-[18pt] text-black antialiased">
         <div className='w-full h-auto flex flex-row justify-between items-center px-4'>
