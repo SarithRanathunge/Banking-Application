@@ -13,7 +13,7 @@ const Employee = () => {
         }
     }
   return (
-    <div className="w-full h-[725px] flex flex-col font-sans text-[18pt] text-black antialiased">
+    <div className="w-full h-[700px] flex flex-col font-sans text-[18pt] text-black antialiased">
         <div className='w-full h-auto flex flex-row justify-between items-center px-4'>
                 {/* searching section */}
                 <div className='w-[500px] h-[50px] flex flex-row px-5 my-3 bg-transparent border-[3.2px] pl-4 rounded-full border-orange-500 bg-none outline-transparent'>
@@ -33,16 +33,16 @@ const Employee = () => {
                 {/* button section */}
                 <div className='flex flex-row'>
                     {/* profile button */}
-                    <button id='profile' class={`w-[100px] h-[50px] text-[14pt] flex flex-row justify-center items-center  rounded-l border-[2px] border-orange-500 border-solid hover:border-[2px] ${show === 'Profile' ? 'bg-white text-orange-500':'bg-orange-500 text-white'}`}
+                    <button id='profile' class={`w-[160px] h-[50px] text-[14pt] flex flex-row justify-center items-center  rounded-l border-[2px] border-orange-500 border-solid hover:border-[2px] ${show === 'Profile' ? 'bg-orange-500 text-white':'bg-white text-orange-500'}`} 
                       onClick={()=>{setShow('Profile')}}
                     >
-                        All
+                        Add Employee
                     </button>
                     {/* bank account */}
-                    <button id='bank_account' class={`w-[160px] h-[50px] text-[14pt] flex flex-row justify-center items-center  rounded-r border-[2px] border-orange-500 border-solid hover:border-[2px] ${show === 'Account' ? 'bg-white text-orange-500':'bg-orange-500 text-white'} `}
+                    <button id='bank_account' class={`w-[160px] h-[50px] text-[14pt] flex flex-row justify-center items-center  rounded-r border-[2px] border-orange-500 border-solid hover:border-[2px] ${show === 'Account' ? 'bg-orange-500 text-white':'bg-white text-orange-500'}`}
                     onClick={()=>{setShow('Account')}}
                     >
-                        Add Employee
+                        All
                     </button>
                 </div>
             </div>

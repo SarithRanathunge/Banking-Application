@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Home from './Manager-components/home';
 import Employee from './Manager-components/employee';
 import Accounts from './Manager-components/accounts';
@@ -8,7 +8,9 @@ import Transaction from './Manager-components/transaction';
 import Icon_Image from './assets/bank-image-icon.png';
 
 const Main = () => {
-    
+    const location = useLocation();
+    const { branch_name, first_name } = location.state || {}; // Destructure state
+
     const [activeComponent, setActiveComponent] = useState('Home');
     const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
@@ -185,13 +187,13 @@ const Main = () => {
             {/* Main Content Area */}
             <div className='w-full h-screen flex flex-col items-start text-lg font-medium'>
                 <div className='w-full h-14 flex flex-row items-center justify-between px-5 border-solid rounded-sm border-b-orange-500 border-4'>
-                    <p>Branch - Nugegoda</p>
+                    <p>Branch-{branch_name}</p>
                     <p>{currentDateTime.toLocaleTimeString()}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{formatDate(currentDateTime)}</p>
                     <div className='flex flex-row justify-center items-center'>
                         <svg class="w-6 h-6 text-black dark:text-black mx-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                           <path fill-rule="evenodd" d="M12 20a7.966 7.966 0 0 1-5.002-1.756l.002.001v-.683c0-1.794 1.492-3.25 3.333-3.25h3.334c1.84 0 3.333 1.456 3.333 3.25v.683A7.966 7.966 0 0 1 12 20ZM2 12C2 6.477 6.477 2 12 2s10 4.477 10 10c0 5.5-4.44 9.963-9.932 10h-.138C6.438 21.962 2 17.5 2 12Zm10-5c-1.84 0-3.333 1.455-3.333 3.25S10.159 13.5 12 13.5c1.84 0 3.333-1.455 3.333-3.25S13.841 7 12 7Z" clip-rule="evenodd"/>
                         </svg>
-                        <p>Hirantha</p>
+                        <p>{first_name}</p>
                     </div>
                 </div>
                 <div className='w-full h-full'>

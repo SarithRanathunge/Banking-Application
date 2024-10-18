@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import DataTable from './dataTable';
 import { getTransactions } from '../../api';
 import { jwtDecode } from 'jwt-decode';
@@ -9,21 +9,20 @@ const Transaction = () => {
   const [branchId, setBranchId] = useState('');
   const [employeeId, setEmployeeId] = useState('');
 
-  const fetchTransactions = async () => {
+  const fetchTransactions = useCallback(async () => {
     try {
       const response = await getTransactions(branchId);
       const data = response.data.transactions;
       console.log(data);
       setTransactions(data);
     } catch (error) {
-      // Extract detailed error information for better debugging.
       if (error.response) {
-        console.log('Error fetching transactions - Server response error:');
+        console.log('Error fetching transactions - Server response error:', error.response);
       } else {
         console.log('Error fetching transactions - Client error:', error.message);
       }
     }
-  };
+  }, [branchId]); // Memoize to only change if branchId changes
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -32,12 +31,13 @@ const Transaction = () => {
       setBranchId(decodedToken.user.branch_id);
       setEmployeeId(decodedToken.user.employee_id);
     }
+  }, []);
 
-    // Fetch transactions when branchId is available
+  useEffect(() => {
     if (branchId) {
       fetchTransactions();
     }
-  }, []);
+  }, [branchId, fetchTransactions]); // Now fetchTransactions is included in the dependency array
 
   return (
     <div className="w-full h-[700px] flex flex-col font-sans antialiased">
@@ -67,7 +67,7 @@ const Transaction = () => {
         </button>
       </div>
 
-      <div className='w-full h-auto flex items-center justify-center'>
+      <div className='w-full h-auto flex items-center justify-center mt-5'>
         {/* Pass transactions, employeeId, and branchId as props */}
         <DataTable transactions={transactions} employeeId={employeeId} branchId={branchId} />
       </div>

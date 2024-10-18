@@ -13,7 +13,7 @@ const Info = () => {
     const [Gender, setGender] = useState('');
     const [Account_no, setAccount_no] = useState('');
     const [image, setImage] = useState(null);
-    const [imagePreview, setImagePreview] = useState('');
+    // const [imagePreview, setImagePreview] = useState('');
     const [dateOpened, setDateOpened] = useState('');
     const [balance, setBalance] = useState('');
     const [accountTypeName, setAccountTypeName] = useState('');

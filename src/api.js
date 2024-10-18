@@ -16,6 +16,7 @@ export const getAccountForWithdrawalAndDeposit = (account_no) => api.get(`/accou
 export const withdrawAmount = (withdrawData) => api.post("/transactions/withdraw", withdrawData);
 export const depositAmount = (depositData) => api.post("/transactions/deposit", depositData);
 export const getTransactions = (branchID) => api.get(`/transactions/transaction/${branchID}`);
+export const getEmployees = (branchID) => api.get(`/employees/${branchID}`);
 
 //Auth API endpoints
 export const loginUser = (userData) => api.post('/auth/login', userData);
