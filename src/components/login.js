@@ -4,12 +4,14 @@ import ReCAPTCHA from 'react-google-recaptcha'; // Import ReCAPTCHA
 import Icon_Image from './assets/bank-image-icon.png';
 import { loginUser } from '../api'; // Import the loginUser function from the API file
 import { jwtDecode } from 'jwt-decode';
+import { useAuth } from '../context/AuthContext'; // Adjust the path if necessary
 
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState(''); 
     const [recaptchaToken, setRecaptchaToken] = useState(null); // State for recaptcha
+    const { login } = useAuth(); // Use the login function from the context
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
@@ -22,7 +24,8 @@ const Login = () => {
             }
             const userData = { username, password, recaptchaToken };
             const response = await loginUser(userData); // Pass the whole userData object
-            localStorage.setItem("token", response.data.token);
+            // localStorage.setItem("token", response.data.token);
+            login(response.data.token); // Call the login function with the received token
     
             // Decode the JWT token
             const decoded = jwtDecode(response.data.token);
